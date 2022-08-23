@@ -1,26 +1,26 @@
 #!/bin/bash
 
-if [ -z $1 ]; then
+if [ -z "${1}" ]; then
 	echo "Please supply a file"
 	exit
 fi
 
-IFN=$1
+IFN="${1}"
 OFN=${IFN%%.*}.pgm
 BFN=${IFN%%.*}.bin
 
 # Convert to 16-bit file and rotate 90 degrees counter-clockwise
-convert $IFN -depth 16 -rotate 270 $OFN
+convert "${IFN}" -depth 16 -rotate 270 "${OFN}"
 
 # Check if the 2nd line has a comment
-COMMENT=`head -n 3 $OFN | grep \#`
+COMMENT=`head -n 3 "${OFN}" | grep \#`
 if [ "${COMMENT}X" == "X" ]; then
 	# Remove the header data
-	sed '1,3d' $OFN > $BFN
+	sed '1,3d' "${OFN}" > "${BFN}"
 else
 	# Remove the header data
-	sed '1,4d' $OFN > $BFN
+	sed '1,4d' "${OFN}" > "${BFN}"
 fi
 
 # Remove the temporary file
-rm $OFN
+rm "${OFN}"
